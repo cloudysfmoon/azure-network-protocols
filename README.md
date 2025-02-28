@@ -49,33 +49,62 @@ Next we will set up the virtual network which will be done for both the Windows 
 <p>
 Observing ICMP Traffic
 <p>
+We are using a Mac so we will need to go to the App Store and download Microsoft Remote Desktop(Windows App) to connect to the remote desktop. We will need to use the IP address of the windows virtual machine to connect, as well as the adminstrator credentials to be able to login to the machine.
 
+![2](https://github.com/user-attachments/assets/4efe87e8-0a4b-4b6b-8324-94f50fedcc6b)
+<p>
+  
+![3](https://github.com/user-attachments/assets/60166c69-584f-4994-8b27-1f6787702fc4)
+<p>
+We are going to download an application from the Windows virtual machine called Wireshark, which is a network protocol analyzer. To analyze network traffic using Wireshark, we first opened the application and initiated a packet capture. To focus on relevant data, we applied a filter to display only ICMP (Internet Control Message Protocol) traffic. Next, we identified the private IP address of the Ubuntu virtual machine (which was 10.0.0.5) and attempted to ping it from the Windows 10 VM. This allowed us to observe the ping requests and responses within Wireshark, confirming network communication between the two VMs. 
 
+![7](https://github.com/user-attachments/assets/ffa6bb6a-4fc2-486c-a44f-4c6eac09dbd1)
+<p>
+Configuring a Firewall [Network Security Group]
+To test network security settings, we first started a continuous (-t) ping from the Windows 10 VM to the Ubuntu VM. While the ping was running, we accessed the Network Security Group (NSG) for the Ubuntu VM and disabled inbound ICMP traffic. Back in the Windows 10 VM, we observed the ping responses in the command line and Wireshark, noticing that the requests were being sent but no replies were received. Then, we re-enabled ICMP traffic in the NSG and saw the ping responses resume in both the command line and Wireshark, confirming that the Ubuntu VM was reachable again. Finally, we stopped the ping activity.
 
+![8](https://github.com/user-attachments/assets/ee571524-db2f-4f36-8aa5-c57325d72a1a)
+<p>
+  
+![9](https://github.com/user-attachments/assets/5dcdcfdc-45db-40e4-a671-c37051b0c400)
+<p>
+  
+![10](https://github.com/user-attachments/assets/34a8ac64-2490-482d-8945-9946bcfa07b2)
+As we can see the request timed out due to the security ruled we added so the linux virtual machine is ignoring the traffic causing the time out request and not replying to the traffic. 
+<p>
+Observing SSH Traffic
+<p>
+We will be observing SSH traffic in Wireshark, we need to filter by SSH in the program, it will also requre to input the admin credentials in order to continue in order to observe the traffic. 
 
-
-
-
-
-
-
-
-
-
-<br />
-
+![1](https://github.com/user-attachments/assets/3999073b-58ad-48b8-9e0b-67164672820f)
 <p>
 
-</p>
+![2](https://github.com/user-attachments/assets/79cdb91a-0a63-486d-a9aa-b45b5a5780f9)
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-</p>
-<br />
+Observing DHCP Traffic
+<p>
+In this section, we obseved the traffic for DHCP. we filtered for DHCP traffic, specifcally we filtered by the UDP ports(67,68). We had to create a bat file and save it to the Program Data section in the Windows VM, due to when we first ran ipconfig /release, it crashed the virtual machine. The reason we ran the commands using a bat file is beacuse it runs the commands sequentially. 
 
+![3](https://github.com/user-attachments/assets/576a74be-1545-41ed-8801-f30a6ace9ec3)
+<p>
+  
+![5](https://github.com/user-attachments/assets/242e9a87-a062-404c-9057-e9e178d1ba62)
 <p>
 
-</p>
+![6](https://github.com/user-attachments/assets/9e5d1883-2a2b-4a21-a3ed-a9491a8fcf69)
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-</p>
+Now we are able to see the different DHCP traffic in Wireshark.
+<p>
+Observing DNS Traffic
+<p>
+The DNS lookup is easier, we filter by DNS in Wireshark and we are abe to see the traffic from websites once we input "nslookup" and the website that follows, fort example, we used Disney and Goolge and we were able to see their addresses. 
+
+![1 dns lookup](https://github.com/user-attachments/assets/8f7a182f-f585-4753-925b-c4edaad0346d)
+<p>
+Observing RDP Traffic
+<p>
+We filter in Wireshark for RDP traffic only (tcp.port == 3389). The traffic is still only non-stop spamming. The reason is because the RDP (protocol) is constantly showing you a live stream from one computer to another, therefor traffic is always being transmitted.
+
+![rdp traffic 1](https://github.com/user-attachments/assets/1145dd5c-d879-44b8-ab07-ca8301acdd5a)
+<p>
 <br />
